@@ -13,6 +13,10 @@ const authSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    isVerified:{
+        type:Boolean,
+        default:false
+    },
     verificationToken:String,
     verificationTokenExpiresAt:String,
     resetPasswordToken:String,
