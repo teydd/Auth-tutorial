@@ -46,10 +46,66 @@ const signup = async(req,res)=>{
 }
 
 const signin = async(req,res)=>{
+    const {email,password} = req.body
+
+    try {
+        const user = await User.findOne({email})
+        if(!user){
+            return res.status(400).json({
+                message:"User does not exist"
+            })
+        }
+
+        const validPassword = await bcrypt.compare(password,user.password)
+            if(!validPassword){
+                return res.status(400).json({
+                    message:"Invalid password"
+                })
+            }
+
+            await user.save()
+
+            await generateTokenAndCookie(res,user)
+
+            res.status(200).json({
+                success:true,
+                message:"User signin successfully",
+                ...user._doc,
+                password:null
+            })
+    } catch (error) {
+        console.log("Error signing in")
+        
+    }
    
 }
 
 const verify = async(req,res)=>{
+    const {code} = req.body
+
+    try {
+        const user = await User.findOne({verificationToken:code})
+
+        if(!user){
+            return res.status(400).json({
+                message:"Invalid verification token"                
+            })
+        }
+        user.isVerified = true
+
+        await user.save()
+
+        res.status(200).json({
+            success:true,
+            message:"User verified successfully",
+            ...user._doc,
+            password:null
+        })
+        
+    } catch (error) {
+        console.log("Error verifying the account")
+        
+    }
    
 }
 
@@ -61,4 +117,8 @@ const logout = async(req,res)=>{
         message:"Logged out successfully"
     })
 }
-module.exports = {signup,signin,verify,logout}
+
+const forgotPassword = async(req,res)=>{
+
+}
+module.exports = {signup,signin,verify,logout,forgotPassword}
