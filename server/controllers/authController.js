@@ -1,5 +1,6 @@
 const User = require("../models/authModel");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto")
 const { generateTokenAndCookie } = require("../util/generateTokenAndCookie");
 
 const signup = async(req,res)=>{
@@ -119,6 +120,34 @@ const logout = async(req,res)=>{
 }
 
 const forgotPassword = async(req,res)=>{
+    const {email} = req.body
 
+    try {
+        const user = await User.findOne({
+            email
+        })
+
+        if(!user){
+            return res.status(400).json({
+                message:"User doesn't exist"
+            })
+        }
+        const resetToken = await crypto.randomBytes(20).toString("hex")
+        const resetTokenExpiresAt = Date.now() + 1 *60*60*1000
+
+        user.resetPasswordToken = resetToken
+        user.resetPasswordTokenExpiresAt= resetTokenExpiresAt
+
+        await user.save()
+
+        res.status(200).json({
+            success:true,
+            message:"Reset password sent successfuly",
+            ...user._doc,
+            password:null
+        })
+    } catch (error) {
+        
+    }
 }
 module.exports = {signup,signin,verify,logout,forgotPassword}
