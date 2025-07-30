@@ -151,5 +151,16 @@ const forgotPassword = async(req,res)=>{
     }
 }
 
+const resetPassword = async (req,res)=>{
+    const {token} = req.params
+    const {password}= req.body
 
-module.exports = {signup,signin,verify,logout,forgotPassword}
+    try {
+        
+        
+    } catch (error) {
+        
+    }
+    
+}
+module.exports = {signup,signin,verify,logout,forgotPassword,resetPassword}
