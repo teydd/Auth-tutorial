@@ -147,7 +147,9 @@ const forgotPassword = async(req,res)=>{
             password:null
         })
     } catch (error) {
-        
+        console.log("Error forgot password controller")        
     }
 }
+
+
 module.exports = {signup,signin,verify,logout,forgotPassword}
