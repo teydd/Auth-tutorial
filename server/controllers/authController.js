@@ -156,10 +156,27 @@ const resetPassword = async (req,res)=>{
     const {password}= req.body
 
     try {
-        
-        
+        const user = await User.findOne({
+            resetPasswordToken: token
+        })
+        if(!user){
+            return res.status(400).json({message:"Invalid token"})
+        }
+
+        const newpass = await bcrypt.hash(password, 12)
+        user.password = newpass
+
+        await user.save()
+
+        res.json({
+            success:true,
+            message:"Password saved successfully",
+            ...user._doc,
+            password:null
+        })
     } catch (error) {
-        
+        console.log("Error resetting password")
+        res.status(400).json({message:error.message})        
     }
     
 }
