@@ -180,4 +180,8 @@ const resetPassword = async (req,res)=>{
     }
     
 }
-module.exports = {signup,signin,verify,logout,forgotPassword,resetPassword}
+
+const checkAuth = async(req,res)=>{
+
+}
+module.exports = {signup,signin,verify,logout,forgotPassword,resetPassword,checkAuth}
