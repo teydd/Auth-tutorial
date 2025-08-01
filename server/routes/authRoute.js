@@ -15,6 +15,6 @@ route.post("/forgot-password", forgotPassword)
 
 route.post("/reset-password/:token", resetPassword)
 
-route.post("/check-auth",verifyToken,checkAuth, next)
+route.get("/check-auth",verifyToken,checkAuth)
 
 module.exports = route
