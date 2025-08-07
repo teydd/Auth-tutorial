@@ -1,188 +1,179 @@
 const User = require("../models/authModel");
 const bcrypt = require("bcryptjs");
-const crypto = require("crypto")
+const crypto = require("crypto");
 const { generateTokenAndCookie } = require("../util/generateTokenAndCookie");
 
-const signup = async(req,res)=>{
+const signup = async (req, res) => {
+  const { email, password, name } = req.body;
 
-   const {email,password,name} = req.body
-
-   try {
-    if(!email || !password || !name){
-        throw new Error("All fields are required");        
+  try {
+    if (!email || !password || !name) {
+      throw new Error("All fields are required");
     }
     const exist = await User.findOne({
-        email
-    })
-    
-    if(exist){
-        return res.status(400).json({message:"User already exists"})
+      email,
+    });
+
+    if (exist) {
+      return res.status(400).json({ message: "User already exists" });
     }
 
-    const pass = await bcrypt.hash(password, 12)
-    const verificationToken = Math.floor(100000 + Math.random()*900000).toString()
+    const pass = await bcrypt.hash(password, 12);
+    const verificationToken = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
 
     const user = new User({
-        email,
-        password:pass,
-        name,
-        verificationToken
-    })
+      email,
+      password: pass,
+      name,
+      verificationToken,
+    });
 
-    await user.save()
+    await user.save();
 
-    await generateTokenAndCookie(res,user)
+    await generateTokenAndCookie(res, user);
 
     res.status(201).json({
-        success:true,
-        message:"User Created Successfully",
-        ...user._doc
-    })
+      success: true,
+      message: "User Created Successfully",
+      ...user._doc,
+    });
+  } catch (error) {
+    console.log("Error signing up", error);
+  }
+};
 
-    
-   } catch (error) {
-    console.log("Error signing up",error)
-     
-   }
-}
+const signin = async (req, res) => {
+  const { email, password } = req.body;
 
-const signin = async(req,res)=>{
-    const {email,password} = req.body
-
-    try {
-        const user = await User.findOne({email})
-        if(!user){
-            return res.status(400).json({
-                message:"User does not exist"
-            })
-        }
-
-        const validPassword = await bcrypt.compare(password,user.password)
-            if(!validPassword){
-                return res.status(400).json({
-                    message:"Invalid password"
-                })
-            }
-
-            await user.save()
-
-            await generateTokenAndCookie(res,user)
-
-            res.status(200).json({
-                success:true,
-                message:"User signin successfully",
-                ...user._doc,
-                password:null
-            })
-    } catch (error) {
-        console.log("Error signing in")
-        
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        message: "User does not exist",
+      });
     }
-   
-}
 
-const verify = async(req,res)=>{
-    const {code} = req.body
-
-    try {
-        const user = await User.findOne({verificationToken:code})
-
-        if(!user){
-            return res.status(400).json({
-                message:"Invalid verification token"                
-            })
-        }
-        user.isVerified = true
-
-        await user.save()
-
-        res.status(200).json({
-            success:true,
-            message:"User verified successfully",
-            ...user._doc,
-            password:null
-        })
-        
-    } catch (error) {
-        console.log("Error verifying the account")
-        
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({
+        message: "Invalid password",
+      });
     }
-   
-}
 
-const logout = async(req,res)=>{
+    await user.save();
 
-    res.clearCookie("token")
+    await generateTokenAndCookie(res, user);
+
     res.status(200).json({
-        success:true,
-        message:"Logged out successfully"
-    })
-}
+      success: true,
+      message: "User signin successfully",
+      ...user._doc,
+      password: null,
+    });
+  } catch (error) {
+    console.log("Error signing in");
+  }
+};
 
-const forgotPassword = async(req,res)=>{
-    const {email} = req.body
+const verify = async (req, res) => {
+  const { code } = req.body;
 
-    try {
-        const user = await User.findOne({
-            email
-        })
+  try {
+    const user = await User.findOne({ verificationToken: code });
 
-        if(!user){
-            return res.status(400).json({
-                message:"User doesn't exist"
-            })
-        }
-        const resetToken = await crypto.randomBytes(20).toString("hex")
-        const resetTokenExpiresAt = Date.now() + 1 *60*60*1000
-
-        user.resetPasswordToken = resetToken
-        user.resetPasswordTokenExpiresAt= resetTokenExpiresAt
-
-        await user.save()
-
-        res.status(200).json({
-            success:true,
-            message:"Reset password sent successfuly",
-            ...user._doc,
-            password:null
-        })
-    } catch (error) {
-        console.log("Error forgot password controller")        
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid verification token",
+      });
     }
-}
+    user.isVerified = true;
 
-const resetPassword = async (req,res)=>{
-    const {token} = req.params
-    const {password}= req.body
+    await user.save();
 
-    try {
-        const user = await User.findOne({
-            resetPasswordToken: token
-        })
-        if(!user){
-            return res.status(400).json({message:"Invalid token"})
-        }
+    res.status(200).json({
+      success: true,
+      message: "User verified successfully",
+      ...user._doc,
+      password: null,
+    });
+  } catch (error) {
+    console.log("Error verifying the account");
+  }
+};
 
-        const newpass = await bcrypt.hash(password, 12)
-        user.password = newpass
+const logout = async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+};
 
-        await user.save()
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
 
-        res.json({
-            success:true,
-            message:"Password saved successfully",
-            ...user._doc,
-            password:null
-        })
-    } catch (error) {
-        console.log("Error resetting password")
-        res.status(400).json({message:error.message})        
+  try {
+    const user = await User.findOne({
+      email,
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "User doesn't exist",
+      });
     }
-    
-}
+    const resetToken = await crypto.randomBytes(20).toString("hex");
+    const resetTokenExpiresAt = Date.now() + 1 * 60 * 60 * 1000;
 
-const checkAuth = async(req,res)=>{
-   try {
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordTokenExpiresAt = resetTokenExpiresAt;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Reset password sent successfuly",
+      ...user._doc,
+      password: null,
+    });
+  } catch (error) {
+    console.log("Error forgot password controller");
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: token,
+    });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid token" });
+    }
+
+    const newpass = await bcrypt.hash(password, 12);
+    user.password = newpass;
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "Password saved successfully",
+      ...user._doc,
+      password: null,
+    });
+  } catch (error) {
+    console.log("Error resetting password");
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const checkAuth = async (req, res) => {
+  try {
     const user = await User.findById(req.userId);
     if (!user) {
       return res.status(400).json({
@@ -200,6 +191,13 @@ const checkAuth = async(req,res)=>{
     console.log("Error in checkAuth", error);
     res.status(400).json({ message: error.message });
   }
-
-}
-module.exports = {signup,signin,verify,logout,forgotPassword,resetPassword,checkAuth}
+};
+module.exports = {
+  signup,
+  signin,
+  verify,
+  logout,
+  forgotPassword,
+  resetPassword,
+  checkAuth,
+};
