@@ -1,7 +1,7 @@
 body {
-    background: linear-gradient(90deg,grey,darkgreen);
+  background: linear-gradient(90deg, grey, darkgreen);
 }
 
-.form{
-    background: rgba(128, 128, 128, 0.3);
+.form {
+  background: rgba(128, 128, 128, 0.3);
 }
