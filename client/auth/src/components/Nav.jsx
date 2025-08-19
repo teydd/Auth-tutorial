@@ -37,6 +37,7 @@ export default function Nav() {
             </ul>
           </div>
         </div>
+        <a href="/signin" className="btn btn-outline-success">Signin</a>
       </nav>
     </>
   );
