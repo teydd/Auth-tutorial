@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Signin from "./pages/Signin";
 import ForgotPassword from "./pages/ForgotPassword";
+import PasswordReset from "./pages/PasswordReset";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
           <Route path="/signin" element={<Signin></Signin>}></Route>
           <Route path="/forgot-password" element={<ForgotPassword></ForgotPassword>}></Route>
+          <Route path="/reset-password" element={<PasswordReset></PasswordReset>}></Route>
         </Routes>
       </Router>
     </>
