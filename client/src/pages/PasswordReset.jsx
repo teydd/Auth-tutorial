@@ -5,7 +5,7 @@ export default function PasswordReset() {
     <div className="align-items-center justify-content-center d-flex mt-5 ">
         <form className="form p-5 rounded-4">
           <p className='text-center'>Enter New and Confirm Password</p>
-          <br />
+          <hr />
           <input className="form-control" type="password" name="" id="" placeholder="Enter Password"/>
           <br />
           <input className="form-control" type="password" name="" id="" placeholder="Confirm Password"/>
