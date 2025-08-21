@@ -6,7 +6,7 @@ import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Signin from "./pages/Signin";
-import Signup from "./pages/Signup"
+import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import PasswordReset from "./pages/PasswordReset";
 
@@ -20,8 +20,14 @@ function App() {
           <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
           <Route path="/signin" element={<Signin></Signin>}></Route>
           <Route path="/signup" element={<Signup></Signup>}></Route>
-          <Route path="/forgot-password" element={<ForgotPassword></ForgotPassword>}></Route>
-          <Route path="/reset-password" element={<PasswordReset></PasswordReset>}></Route>
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword></ForgotPassword>}
+          ></Route>
+          <Route
+            path="/reset-password"
+            element={<PasswordReset></PasswordReset>}
+          ></Route>
         </Routes>
       </Router>
     </>
