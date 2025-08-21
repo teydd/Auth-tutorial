@@ -19,10 +19,7 @@ export default function Nav() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div
-            className="collapse navbar-collapse"
-            id="navbarNavDropdown"
-          >
+          <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav w-100 align-items-center justify-content-center">
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="/home">
@@ -35,9 +32,10 @@ export default function Nav() {
                 </a>
               </li>
             </ul>
-            
-              <a href="/signin" className="btn btn-outline-success active ">Signin</a>
-            
+
+            <a href="/signin" className="btn btn-outline-success active ">
+              Signin
+            </a>
           </div>
         </div>
       </nav>
