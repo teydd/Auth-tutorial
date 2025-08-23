@@ -25,8 +25,7 @@ function App() {
             path="/forgot-password"
             element={<ForgotPassword></ForgotPassword>}
           ></Route>
-          <Route
-            path="/reset-password"
+          <Route path="/reset-password"
             element={<PasswordReset></PasswordReset>}
           ></Route>
           <Route path="/verify" element={<Verify></Verify>}></Route>
