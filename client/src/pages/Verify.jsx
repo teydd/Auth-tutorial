@@ -3,9 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 export default function Verify() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
- 
-
-
 
   const handleChange = (index, value) => {
     const newcode = [...code];
@@ -40,8 +37,6 @@ export default function Verify() {
     e.preventDefault();
     const verificationCode = code.join("");
     alert(`Verification code submitted: ${verificationCode}`);
-
-   
   };
 
   useEffect(() => {
@@ -49,7 +44,6 @@ export default function Verify() {
       handleSubmit(new Event("submit"));
     }
   }, [code]);
-
 
   return (
     <>
