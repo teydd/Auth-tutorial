@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
+import {  useNavigate } from "react-router-dom";
 
 export default function Verify() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
+  const navigate = useNavigate();
 
   const handleChange = (index, value) => {
     const newcode = [...code];
@@ -37,6 +39,14 @@ export default function Verify() {
     e.preventDefault();
     const verificationCode = code.join("");
     alert(`Verification code submitted: ${verificationCode}`);
+    
+    try {
+      await verifyEmail(verificationCode);
+      navigate("/home");
+      toast.success("Email verified successfully");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
