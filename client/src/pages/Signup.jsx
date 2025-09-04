@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import { useAuthStore } from "../store/authStore";
 
 export default function Signup() {
+  const {signup,error } = useAuthStore()
   const [form, setForm] = useState({
     email: "",
     name: "",
     tel: "",
     password: "",
   });
+  
   const handleOnchange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -14,8 +17,15 @@ export default function Signup() {
       [name]: value,
     }));
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      await signup(email,password,name)
+      navigate("/verify-email")
+    } catch (error) {
+      console.log(error)      
+    }
   };
   return (
     <>
@@ -63,6 +73,7 @@ export default function Signup() {
             placeholder="Enter Password"
           />
           <br />
+          {error && <p>{error}</p>}
           <button
             type="submit"
             className="btn btn-lg btn-outline-success active w-100"
