@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import PasswordReset from "./pages/PasswordReset";
 import Verify from "./pages/Verify";
+import { Toaster } from "react-hot-toast"
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           ></Route>
           <Route path="/verify" element={<Verify></Verify>}></Route>
         </Routes>
+        <Toaster/>
       </Router>
     </>
   );
