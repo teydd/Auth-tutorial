@@ -10,7 +10,7 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import PasswordReset from "./pages/PasswordReset";
 import Verify from "./pages/Verify";
-import { Toaster } from "react-hot-toast"
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -26,12 +26,13 @@ function App() {
             path="/forgot-password"
             element={<ForgotPassword></ForgotPassword>}
           ></Route>
-          <Route path="/reset-password"
+          <Route
+            path="/reset-password"
             element={<PasswordReset></PasswordReset>}
           ></Route>
           <Route path="/verify" element={<Verify></Verify>}></Route>
         </Routes>
-        <Toaster/>
+        <Toaster />
       </Router>
     </>
   );
