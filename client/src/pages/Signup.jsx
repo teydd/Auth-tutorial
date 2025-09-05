@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { useAuthStore } from "../store/authStore";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
+  const navigate = useNavigate()
   const {signup,error } = useAuthStore()
   const [form, setForm] = useState({
     email: "",
@@ -19,12 +21,12 @@ export default function Signup() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const { email, password, name } = form;
     try {
       await signup(email,password,name)
-      navigate("/verify-email")
+      navigate("/verify")
     } catch (error) {
-      console.log(error)      
+      console.log(error)     
     }
   };
   return (
