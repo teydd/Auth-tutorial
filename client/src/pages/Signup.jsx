@@ -3,15 +3,15 @@ import { useAuthStore } from "../store/authStore";
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
-  const navigate = useNavigate()
-  const {signup,error } = useAuthStore()
+  const navigate = useNavigate();
+  const { signup, error } = useAuthStore();
   const [form, setForm] = useState({
     email: "",
     name: "",
     tel: "",
     password: "",
   });
-  
+
   const handleOnchange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -23,10 +23,10 @@ export default function Signup() {
     e.preventDefault();
     const { email, password, name } = form;
     try {
-      await signup(email,password,name)
-      navigate("/verify")
+      await signup(email, password, name);
+      navigate("/verify");
     } catch (error) {
-      console.log(error)     
+      console.log(error);
     }
   };
   return (
