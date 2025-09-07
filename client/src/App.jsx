@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -11,8 +11,15 @@ import ForgotPassword from "./pages/ForgotPassword";
 import PasswordReset from "./pages/PasswordReset";
 import Verify from "./pages/Verify";
 import { Toaster } from "react-hot-toast";
+import { useAuthStore } from "./store/authStore";
 
 function App() {
+  const {isCheckingAuth,checkAuth,isAuthenticated,user} = useAuthStore()
+  useEffect(()=>{
+    checkAuth()
+  },[checkAuth])
+  console.log("isAuthenticated",isAuthenticated)
+  console.log("user",user)
   return (
     <>
       <Router>
