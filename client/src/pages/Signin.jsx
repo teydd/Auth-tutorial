@@ -7,7 +7,7 @@ export default function Signin() {
     password: "",
   });
 
-  const {login,isLoading,error} = useAuthStore()
+  const { login, isLoading, error } = useAuthStore();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,10 +16,10 @@ export default function Signin() {
       [name]: value,
     }));
   };
-  const handleSubmit =async (e) => {
-    const {email,password} = form
+  const handleSubmit = async (e) => {
+    const { email, password } = form;
     e.preventDefault();
-    await login(email,password)  
+    await login(email, password);
   };
   return (
     <>
