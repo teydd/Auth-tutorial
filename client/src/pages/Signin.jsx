@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import { useAuthStore } from "../store/authStore";
 
 export default function Signin() {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  const {login,isLoading,error} = useAuthStore()
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -12,9 +16,10 @@ export default function Signin() {
       [name]: value,
     }));
   };
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
+    const {email,password} = form
     e.preventDefault();
-    alert("Login successful");
+    await login(email,password)  
   };
   return (
     <>
@@ -44,6 +49,7 @@ export default function Signin() {
           <a href="/forgot-password" className="nav-link">
             <i>Forgot Password?</i>
           </a>
+          {error && <p>{error}</p>}
           <hr />
           <button
             type="submit"
