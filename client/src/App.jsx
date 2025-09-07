@@ -14,12 +14,12 @@ import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
 
 function App() {
-  const {isCheckingAuth,checkAuth,isAuthenticated,user} = useAuthStore()
-  useEffect(()=>{
-    checkAuth()
-  },[checkAuth])
-  console.log("isAuthenticated",isAuthenticated)
-  console.log("user",user)
+  const { isCheckingAuth, checkAuth, isAuthenticated, user } = useAuthStore();
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+  console.log("isAuthenticated", isAuthenticated);
+  console.log("user", user);
   return (
     <>
       <Router>
