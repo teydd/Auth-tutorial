@@ -83,4 +83,13 @@ export const useAuthStore = create((set) => ({
       set({ error: null, isCheckingAuth: false, isAuthenticated: false });
     }
   },
+  logout:{
+
+  },
+  forgotPassword:{
+
+  },
+  resetPassword:{
+    
+  }
 }));
