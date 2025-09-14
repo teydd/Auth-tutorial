@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 export default function ForgotPassword() {
   const [form, setForm] = useState({ email: "" });
+  const [isSubmitted,setIsSubmitted] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
