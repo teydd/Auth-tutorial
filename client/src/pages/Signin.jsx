@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../store/authStore";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 export default function Signin() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -22,7 +22,7 @@ export default function Signin() {
     const { email, password } = form;
     e.preventDefault();
     await login(email, password);
-    navigate("/dashboard")
+    navigate("/dashboard");
   };
   return (
     <>
