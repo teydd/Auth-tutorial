@@ -38,6 +38,7 @@ const signup = async (req, res) => {
       success: true,
       message: "User Created Successfully",
       ...user._doc,
+      password:undefined
     });
   } catch (error) {
     console.log("Error signing up", error);
